@@ -10,7 +10,7 @@ export let consumer: Consumer
 
 export const eventEmitter = new EventEmitter()
 
-const getRandomString = (length: number = 5) => cryptoRandomString({ length, type: 'hex' })
+export const getRandomString = (length: number = 5) => cryptoRandomString({ length, type: 'hex' })
 
 export const initKafka = async (config?: KafkaConfig) => {
   if (kafka) {
@@ -35,8 +35,11 @@ export const initKafka = async (config?: KafkaConfig) => {
 
   await consumer.run({
     eachMessage: async (payload) => {
-      logger.trace('received message at topic %o', payload.topic)
       const topic = payload.topic.replace(/(command.)|(event.)/, '')
+      const listeners = eventEmitter.listenerCount(topic)
+      if (!listeners) {
+        return
+      }
       const message = JSON.parse(Buffer.from(payload.message.value).toString('utf-8'))
       eventEmitter.emit(topic, message)
     }
