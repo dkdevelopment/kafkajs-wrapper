@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "prettify": "prettier --write \"**/*.{ts, tsx}\"",
-    "start:demo:one-thread": "ts-node-dev --respawn ./demo/one-process/index.ts",
-    "start:demo:two-threads": "concurrently \"ts-node ./demo/two-processes/provider.ts\" \"ts-node ./demo/two-processes/consumer.ts\""
+    "start:demo:one-process": "ts-node-dev --respawn ./demo/one-process/index.ts",
+    "start:demo:two-processes": "concurrently \"ts-node ./demo/two-processes/provider.ts\" \"ts-node ./demo/two-processes/consumer.ts\""
   },
   "dependencies": {
     "concurrently": "^5.2.0",

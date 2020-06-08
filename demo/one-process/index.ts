@@ -5,7 +5,7 @@ import { initKafka } from '../../lib'
 Promise.resolve().then(async () => {
   await initKafka()
   const startTime = +new Date()
-  await onCommand('test.save', (payload) => {
+  await onCommand('test.save', async (payload) => {
     logger.info(
       'time from start %os message %o',
       (+new Date() - startTime) / 1000,
