@@ -1,6 +1,6 @@
-import { emitCommand, onCommand } from '../lib/commandsManager'
-import logger from '../lib/logger'
-import { initKafka } from '../lib'
+import { emitCommand, onCommand } from '../../lib/commandsManager'
+import logger from '../../lib/logger'
+import { initKafka } from '../../lib'
 
 Promise.resolve().then(async () => {
   await initKafka()
