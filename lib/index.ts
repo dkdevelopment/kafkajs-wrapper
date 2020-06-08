@@ -44,3 +44,25 @@ export const initKafka = async (config?: KafkaConfig) => {
 
   await producer.connect()
 }
+
+const handleClose = async () => {
+  try {
+    logger.info('Closing producer connection')
+    await producer.disconnect()
+    logger.info('Successfully closed producer')
+  } catch(e) {
+    logger.error('Could not disconnect producer. Error message received %o', e)
+  }
+
+  try {
+    logger.info('Closing consumer connection')
+    await consumer.disconnect()
+    logger.info('Successfully closed consumer')
+  } catch(e) {
+    logger.error('Could not disconnect consumer. Error message received %o', e)
+  }
+}
+
+process.on('SIGINT', handleClose)
+process.on('SIGTERM', handleClose)
+process.on('SIGKILL', handleClose)
