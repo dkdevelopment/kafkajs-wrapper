@@ -1,5 +1,6 @@
 import { eventEmitter, producer } from '.'
 import logger from './logger'
+import { Message } from './handlers'
 
 declare global {
   interface Commands {
@@ -11,9 +12,12 @@ declare global {
 
 export const onCommand = <T extends keyof Commands>(
   command: keyof Commands, 
-  callback: (payload: Commands[T]) => void
+  callback: (payload: Commands[T]) => Promise<void>
 ) => {
-  eventEmitter.on(command, callback)
+  eventEmitter.on(command, async (payload: Message<Commands[T]>) => {
+    await callback(payload.message)
+    eventEmitter.emit(payload.trackId)
+  })
 }
 
 export const emitCommand = async <T extends keyof Commands>(

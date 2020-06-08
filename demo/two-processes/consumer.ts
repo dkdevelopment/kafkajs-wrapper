@@ -5,7 +5,7 @@ import logger from '../../lib/logger'
 const messageReceiver = async () => {
   await initKafka()
 
-  await onCommand('test.save', ({ message }) => {
+  onCommand('test.save', async ({ message }) => {
     logger.info('Received message %o', message)
   })
 }

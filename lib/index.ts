@@ -3,6 +3,7 @@ import { KafkaError, KafkaErrorCodes } from './errors'
 import { EventEmitter } from 'eventemitter3'
 import logger from './logger'
 import * as cryptoRandomString from 'crypto-random-string'
+import { handleMessage } from './handlers'
 
 let kafka: Kafka
 export let producer: Producer
@@ -34,15 +35,7 @@ export const initKafka = async (config?: KafkaConfig) => {
   await consumer.subscribe({ topic: /(event.).*/ })
 
   await consumer.run({
-    eachMessage: async (payload) => {
-      const topic = payload.topic.replace(/(command.)|(event.)/, '')
-      const listeners = eventEmitter.listenerCount(topic)
-      if (!listeners) {
-        return
-      }
-      const message = JSON.parse(Buffer.from(payload.message.value).toString('utf-8'))
-      eventEmitter.emit(topic, message)
-    }
+    eachMessage: handleMessage
   })
 
   producer = kafka.producer()
