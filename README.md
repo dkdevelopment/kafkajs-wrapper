@@ -20,3 +20,15 @@ yarn start:demo:one-process
 ```
 yarn start:demo:two-processes
 ```
+
+### To run three processes demo with producer and 2 consumers in the same group
+They shall be loadbalanced (no duplicate messages should appear)
+```
+yarn start:demo:1c2p1gid
+```
+
+### To run three processes demo with producent and 2 consumers in 2 different groups (microservices pattern)
+They shall receive duplicate messages to acknowledge.
+```
+yarn start:demo:1c2p2gid
+```

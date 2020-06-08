@@ -8,7 +8,9 @@
   "scripts": {
     "prettify": "prettier --write \"**/*.{ts, tsx}\"",
     "start:demo:one-process": "ts-node-dev --respawn ./demo/one-process/index.ts",
-    "start:demo:two-processes": "concurrently \"ts-node ./demo/two-processes/provider.ts\" \"ts-node ./demo/two-processes/consumer.ts\""
+    "start:demo:two-processes": "concurrently \"ts-node ./demo/two-processes/provider.ts\" \"ts-node ./demo/two-processes/consumer.ts\"",
+    "start:demo:1c2p1gid": "concurrently \"ts-node ./demo/1c2p1gid/producer.ts\" \"ts-node ./demo/1c2p1gid/consumer-1.ts\" \"ts-node ./demo/1c2p1gid/consumer-2.ts\"",
+    "start:demo:1c2p2gid": "concurrently \"ts-node ./demo/1c2p2gid/producer.ts\" \"ts-node ./demo/1c2p2gid/consumer-1.ts\" \"ts-node ./demo/1c2p2gid/consumer-2.ts\""
   },
   "dependencies": {
     "concurrently": "^5.2.0",

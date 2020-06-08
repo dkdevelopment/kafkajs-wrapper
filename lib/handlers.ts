@@ -1,6 +1,7 @@
 import { EachMessagePayload } from 'kafkajs'
 import { eventEmitter } from '.'
 import { v4 } from 'uuid'
+import logger from './logger'
 
 export interface Message<T> {
   trackId: string

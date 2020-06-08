@@ -2,7 +2,7 @@ import { Kafka, KafkaConfig, Producer, Consumer, logLevel } from 'kafkajs'
 import { KafkaError, KafkaErrorCodes } from './errors'
 import { EventEmitter } from 'eventemitter3'
 import logger from './logger'
-import * as cryptoRandomString from 'crypto-random-string'
+import cryptoRandomString from 'crypto-random-string'
 import { handleMessage } from './handlers'
 import packageJson from '../package.json'
 
@@ -15,7 +15,11 @@ export const eventEmitter = new EventEmitter()
 export const getRandomString = (length: number = 5) =>
   cryptoRandomString({ length, type: 'hex' })
 
-export const initKafka = async (config?: KafkaConfig) => {
+type Config = Partial<KafkaConfig> & {
+  groupName?: string
+}
+
+export const initKafka = async (config: Config = {}) => {
   if (kafka) {
     throw new KafkaError(
       'You need to disconnect before creating new instance of Kafka',
@@ -29,7 +33,9 @@ export const initKafka = async (config?: KafkaConfig) => {
     ...(config || {})
   })
 
-  consumer = kafka.consumer({ groupId: `service-${packageJson.name}` })
+  const groupName = config.groupName || packageJson.name
+
+  consumer = kafka.consumer({ groupId: `service-${groupName}` })
 
   await consumer.connect()
 
@@ -64,5 +70,5 @@ const handleClose = async () => {
 }
 
 process.on('SIGINT', handleClose)
-process.on('SIGTERM', handleClose)
-process.on('SIGKILL', handleClose)
+// process.on('SIGTERM', handleClose)
+// process.on('SIGKILL', handleClose)
