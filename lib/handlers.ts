@@ -26,7 +26,7 @@ export const handleMessage = async (payload: EachMessagePayload) => {
 
 const waitForAck = (trackId: string, timeout: number = 5000) => new Promise((resolve, reject) => {
   const clock = setTimeout(() => reject(`Did not find ack in ${timeout}ms aborting...`), timeout)
-  eventEmitter.on(trackId, () => {
+  eventEmitter.once(trackId, () => {
     clearTimeout(clock)
     resolve()
   })
