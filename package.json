@@ -1,0 +1,8 @@
+{
+  "name": "kafka-wrapper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:dkdevelopment/kafkajs-wrapper.git",
+  "author": "Daniel Kuliński <torozniks@gmail.com>",
+  "license": "MIT"
+}
