@@ -11,7 +11,7 @@ declare global {
 }
 
 export const onCommand = <T extends keyof Commands>(
-  command: keyof Commands, 
+  command: keyof Commands,
   callback: (payload: Commands[T]) => Promise<void>
 ) => {
   eventEmitter.on(command, async (payload: Message<Commands[T]>) => {

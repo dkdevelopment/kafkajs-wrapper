@@ -13,9 +13,11 @@ export const handleMessage = async (payload: EachMessagePayload) => {
   if (!listeners) {
     return
   }
-  const message = JSON.parse(Buffer.from(payload.message.value).toString('utf-8'))
+  const message = JSON.parse(
+    Buffer.from(payload.message.value).toString('utf-8')
+  )
 
-  const data: Message<any> = { 
+  const data: Message<any> = {
     trackId: v4(),
     message
   }
@@ -24,10 +26,14 @@ export const handleMessage = async (payload: EachMessagePayload) => {
   await waitForAck(data.trackId)
 }
 
-const waitForAck = (trackId: string, timeout: number = 5000) => new Promise((resolve, reject) => {
-  const clock = setTimeout(() => reject(`Did not find ack in ${timeout}ms aborting...`), timeout)
-  eventEmitter.once(trackId, () => {
-    clearTimeout(clock)
-    resolve()
+const waitForAck = (trackId: string, timeout: number = 5000) =>
+  new Promise((resolve, reject) => {
+    const clock = setTimeout(
+      () => reject(`Did not find ack in ${timeout}ms aborting...`),
+      timeout
+    )
+    eventEmitter.once(trackId, () => {
+      clearTimeout(clock)
+      resolve()
+    })
   })
-})

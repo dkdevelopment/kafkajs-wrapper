@@ -6,6 +6,7 @@
   "author": "Daniel Kuliński <torozniks@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prettify": "prettier --write \"**/*.{ts, tsx}\"",
     "start:demo:one-thread": "ts-node-dev --respawn ./demo/one-process/index.ts",
     "start:demo:two-threads": "concurrently \"ts-node ./demo/two-processes/provider.ts\" \"ts-node ./demo/two-processes/consumer.ts\""
   },
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@types/node": "^14.0.11",
     "@types/uuid": "^8.0.0",
+    "prettier": "^2.0.5",
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.44"
   }

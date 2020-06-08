@@ -11,12 +11,13 @@ export let consumer: Consumer
 
 export const eventEmitter = new EventEmitter()
 
-export const getRandomString = (length: number = 5) => cryptoRandomString({ length, type: 'hex' })
+export const getRandomString = (length: number = 5) =>
+  cryptoRandomString({ length, type: 'hex' })
 
 export const initKafka = async (config?: KafkaConfig) => {
   if (kafka) {
     throw new KafkaError(
-      'You need to disconnect before creating new instance of Kafka', 
+      'You need to disconnect before creating new instance of Kafka',
       KafkaErrorCodes.ALREADY_INSTANTIATED
     )
   }
