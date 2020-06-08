@@ -4,6 +4,7 @@ import { EventEmitter } from 'eventemitter3'
 import logger from './logger'
 import * as cryptoRandomString from 'crypto-random-string'
 import { handleMessage } from './handlers'
+import packageJson from '../package.json'
 
 let kafka: Kafka
 export let producer: Producer
@@ -28,7 +29,7 @@ export const initKafka = async (config?: KafkaConfig) => {
     ...(config || {})
   })
 
-  consumer = kafka.consumer({ groupId: `kafka-lib-${getRandomString()}` })
+  consumer = kafka.consumer({ groupId: `service-${packageJson.name}` })
 
   await consumer.connect()
 
