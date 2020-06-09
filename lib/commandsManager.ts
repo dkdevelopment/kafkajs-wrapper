@@ -3,26 +3,26 @@ import logger from './logger'
 import { Message } from './handlers'
 
 declare global {
-  interface Commands {
+  interface KafkaCommands {
     'test.save': {
       message: string
     }
   }
 }
 
-export const onCommand = <T extends keyof Commands>(
-  command: keyof Commands,
-  callback: (payload: Commands[T]) => Promise<void>
+export const onCommand = <T extends keyof KafkaCommands>(
+  command: keyof KafkaCommands,
+  callback: (payload: KafkaCommands[T]) => Promise<void>
 ) => {
-  eventEmitter.on(command, async (payload: Message<Commands[T]>) => {
+  eventEmitter.on(command, async (payload: Message<KafkaCommands[T]>) => {
     await callback(payload.message)
     eventEmitter.emit(payload.trackId)
   })
 }
 
-export const emitCommand = async <T extends keyof Commands>(
-  command: keyof Commands,
-  payload: Commands[T]
+export const emitCommand = async <T extends keyof KafkaCommands>(
+  command: keyof KafkaCommands,
+  payload: KafkaCommands[T]
 ) => {
   await producer.send({
     topic: `command.${command}`,

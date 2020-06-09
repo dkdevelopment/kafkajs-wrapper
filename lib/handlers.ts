@@ -1,7 +1,6 @@
 import { EachMessagePayload } from 'kafkajs'
 import { eventEmitter } from '.'
-import { v4 } from 'uuid'
-import logger from './logger'
+import { v4 as uuid } from 'uuid'
 
 export interface Message<T> {
   trackId: string
@@ -14,12 +13,11 @@ export const handleMessage = async (payload: EachMessagePayload) => {
   if (!listeners) {
     return
   }
-  const message = JSON.parse(
-    Buffer.from(payload.message.value).toString('utf-8')
-  )
+
+  const message = JSON.parse(payload.message.value.toString('utf-8'))
 
   const data: Message<any> = {
-    trackId: v4(),
+    trackId: uuid(),
     message
   }
 
