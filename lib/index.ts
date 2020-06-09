@@ -56,7 +56,7 @@ const handleClose = async () => {
     logger.info('Closing producer connection')
     await producer.disconnect()
     logger.info('Successfully closed producer')
-  } catch(e) {
+  } catch (e) {
     logger.error('Could not disconnect producer. Error message received %o', e)
   }
 
@@ -64,7 +64,7 @@ const handleClose = async () => {
     logger.info('Closing consumer connection')
     await consumer.disconnect()
     logger.info('Successfully closed consumer')
-  } catch(e) {
+  } catch (e) {
     logger.error('Could not disconnect consumer. Error message received %o', e)
   }
 }
