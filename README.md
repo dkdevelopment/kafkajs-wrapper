@@ -1,34 +1,42 @@
 # KafkaJs wrapper
 Made for easy management of the library with the usage of EventEmitter API.
 
-## Running it
-To run demos you need to have `docker, docker-compose and npm` installed.<br />
-Before running demo run
-```sh
-# from root
-./demo-setup/start.sh
-```
-Which will setup the docker for kafka.<br />
-Don't forget to run `yarn` before running commands. <br/>
+# Kafka wrapper documentation
 
-### To run one process demo
-```
-yarn start:demo:one-process
-```
+## Getting started
+First off you need to initialize Kafka wrapper. Make it in some start script of your server.
+```typescript
+import { initKafka } from 'kafka-wrapper-ts'
 
-### To run two processes demo with producer and consumer
+Promise.resolve().then(async () => {
+  await initKafka()
+  // congrats you can start your work
+})
 ```
-yarn start:demo:two-processes
-```
+Function accepts the config that is the same as in the module kafkajs. <br/>
+You can find few lines setup in demos.
 
-### To run three processes demo with producer and 2 consumers in the same group
-They shall be loadbalanced (no duplicate messages should appear)
-```
-yarn start:demo:1c2p1gid
-```
+## Expanding the Commands/Events architecture (only typescript)
+If you want to add some commands / events, you need to declare in some of your type files the extension of the global type, that we have produced.
 
-### To run three processes demo with producent and 2 consumers in 2 different groups (microservices pattern)
-They shall receive duplicate messages to acknowledge.
-```
-yarn start:demo:1c2p2gid
+In the following example we are creating the communication commands. So when service receives the `message.send` command should also respond with `message.sent` event. The philosophy behind this is that we can react from one of our consumers with sending email to e.g. offline recipent.
+```typescript
+declare global {
+  interface Commands {
+    'message.send': SomeMessageRequest
+  }
+
+  interface Events {
+    'message.sent': SomeMessage
+  }
+}
+
+interface SomeMessage {
+  author: string
+  receiver: string
+  text: string
+  date: Date
+}
+
+interface SomeMessageRequest extends Omit<SomeMessage, 'date'> {}
 ```

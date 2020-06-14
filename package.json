@@ -1,6 +1,6 @@
 {
-  "name": "kafka-wrapper",
-  "version": "1.0.0",
+  "name": "kafka-wrapper-ts",
+  "version": "0.0.1",
   "main": "lib/index.ts",
   "repository": "git@github.com:dkdevelopment/kafkajs-wrapper.git",
   "author": "Daniel Kuliński <torozniks@gmail.com>",
@@ -12,6 +12,9 @@
     "start:demo:1c2p1gid": "concurrently \"ts-node ./demo/1c2p1gid/producer.ts\" \"ts-node ./demo/1c2p1gid/consumer-1.ts\" \"ts-node ./demo/1c2p1gid/consumer-2.ts\"",
     "start:demo:1c2p2gid": "concurrently \"ts-node ./demo/1c2p2gid/producer.ts\" \"ts-node ./demo/1c2p2gid/consumer-1.ts\" \"ts-node ./demo/1c2p2gid/consumer-2.ts\""
   },
+  "files": [
+    "lib/*.ts"
+  ],
   "dependencies": {
     "concurrently": "^5.2.0",
     "crypto-random-string": "^3.2.0",
