@@ -3,9 +3,7 @@ import logger from './logger'
 import { Message } from './handlers'
 
 declare global {
-  interface KafkaEvents {
-    'test.saved': string
-  }
+  interface KafkaEvents {}
 }
 
 export const onEvent = <T extends keyof KafkaEvents>(

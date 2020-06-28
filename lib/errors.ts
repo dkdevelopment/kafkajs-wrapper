@@ -12,5 +12,6 @@ export class KafkaError extends Error {
 }
 
 export const KafkaErrorCodes = {
-  ALREADY_INSTANTIATED: 'KAF-1'
+  ALREADY_INSTANTIATED: 'KAF-1',
+  NOT_ACKED: 'KAF-2'
 }

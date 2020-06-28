@@ -2,6 +2,7 @@ import { EachMessagePayload } from 'kafkajs'
 import { eventEmitter } from '.'
 import { v4 as uuid } from 'uuid'
 import logger from './logger'
+import { KafkaError, KafkaErrorCodes } from './errors'
 
 export interface Message<T> {
   trackId: string
@@ -18,11 +19,30 @@ export const handleMessage = async (payload: EachMessagePayload) => {
   const message = JSON.parse(payload.message.value.toString('utf-8'))
 
   // on many listeners it may have problems with threads
-  await Promise.all(eventEmitter.listeners(topic).map(async listener => {
-    const trackId = uuid()
-    listener({ message, trackId })
-    await waitForAck(trackId)
-  }))
+  const errors = await ackAll(
+    eventEmitter.listeners(topic).map(async (listener) => {
+      const trackId = uuid()
+      listener({ message, trackId })
+      await waitForAck(trackId)
+    })
+  )
+
+  if (errors.length) {
+    throw new KafkaError(
+      `${errors.length} messages not acked in time`,
+      KafkaErrorCodes.NOT_ACKED
+    )
+  }
+}
+
+const ackAll = async (
+  list: Array<Promise<void>>
+): Promise<any[]> /* errors */ => {
+  const result = await Promise.allSettled(list)
+
+  const errors = result.filter((res) => res.status === 'rejected')
+
+  return errors
 }
 
 const waitForAck = (trackId: string, timeout: number = 5000) =>

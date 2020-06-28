@@ -1,13 +1,8 @@
 import { eventEmitter, producer } from '.'
-import logger from './logger'
 import { Message } from './handlers'
 
 declare global {
-  interface KafkaCommands {
-    'test.save': {
-      message: string
-    }
-  }
+  interface KafkaCommands {}
 }
 
 export const onCommand = <T extends keyof KafkaCommands>(
