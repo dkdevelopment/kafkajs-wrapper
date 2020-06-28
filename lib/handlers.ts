@@ -1,6 +1,7 @@
 import { EachMessagePayload } from 'kafkajs'
 import { eventEmitter } from '.'
 import { v4 as uuid } from 'uuid'
+import logger from './logger'
 
 export interface Message<T> {
   trackId: string
@@ -16,13 +17,12 @@ export const handleMessage = async (payload: EachMessagePayload) => {
 
   const message = JSON.parse(payload.message.value.toString('utf-8'))
 
-  const data: Message<any> = {
-    trackId: uuid(),
-    message
-  }
-
-  eventEmitter.emit(topic, data)
-  await waitForAck(data.trackId)
+  // on many listeners it may have problems with threads
+  await Promise.all(eventEmitter.listeners(topic).map(async listener => {
+    const trackId = uuid()
+    listener({ message, trackId })
+    await waitForAck(trackId)
+  }))
 }
 
 const waitForAck = (trackId: string, timeout: number = 5000) =>
